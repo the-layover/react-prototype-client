@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { loginRequest, logoutSuccess } from '../../actions'
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 import HeaderView from './HeaderView'
 
@@ -20,9 +20,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const HeaderContainer = connect(
+const HeaderContainer = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(HeaderView))
+)(HeaderView))
 
 export default HeaderContainer

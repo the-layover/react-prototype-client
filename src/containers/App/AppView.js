@@ -2,10 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route } from 'react-router-dom'
 
+//coantiners
 import HeaderContainer from '../Header/HeaderContainer'
+import FooterContainer from '../Footer/FooterContainer'
+
+//components
 import HomePage from '../../components/HomePage/HomePage'
 import AboutPage from '../../components/AboutPage/AboutPage'
+import MapPage from '../../components/MapPage/MapPage'
 import NotFoundPage from '../../components/NotFoundPage/NotFoundPage'
+
+
+//services
 import AuthService from '../../utils/AuthService'
 
 class App extends React.Component {
@@ -36,10 +44,12 @@ class App extends React.Component {
       <div>
         <HeaderContainer authService={this.authService} />
         <Switch>
-          <Route path="/" component={HomePage}/>
+          <Route exact path="/" component={HomePage}/>
           <Route path="/about" component={AboutPage}/>
+          <Route path="/map" component={MapPage}/>
           <Route component={NotFoundPage}/>
         </Switch>
+        <FooterContainer />
       </div>
     )
   }

@@ -1,0 +1,21 @@
+#sidebar + #wrapper + #footer {
+  margin-left: _size(sidebar-width);
+}
+@media screen {
+  #sidebar + #wrapper + #footer {
+    margin-left: 0;
+  }
+}
+#footer > .inner a {
+  border-bottom-color: _palette(border);
+}
+#footer > .inner a:hover {
+  border-bottom-color: transparent;
+}
+#footer > .inner .menu {
+  font-size: 0.8em;
+  color: _palette(border);
+}
+#header + #wrapper + #footer > .inner {
+  margin: 0 auto;
+}
