@@ -13,32 +13,32 @@ const Header = ({ authService, history, isAuthenticated, profile, error, loginRe
       <li><Link to='/about'>About</Link></li>
       <li><Link to='/map'>Map</Link></li>
     </ul>
+    { !isAuthenticated ? (
+      <RaisedButton label="Login" onClick={() => {
+          authService.login()
+          loginRequest()
+        }}
+        />
+    ) : (
+      <div>
+        <img src={profile.picture} height="40px" alt="profile" />
+        <span>Welcome, {profile.nickname}</span>
+        <button
+          onClick={() => {
+            logoutSuccess()
+            AuthService.logout() // careful, this is a static method
+            history.push({ pathname: '/' })
+          }}
+          >
+          Logout
+        </button>
+      </div>
+    )}
+    { error &&
+      <p>{error}</p>
+    }
 
   </div>
-  // { !isAuthenticated ? (
-  //   <RaisedButton label="Login" onClick={() => {
-  //       authService.login()
-  //       loginRequest()
-  //     }}
-  //     />
-  // ) : (
-  //   <div>
-  //     <img src={profile.picture} height="40px" alt="profile" />
-  //     <span>Welcome, {profile.nickname}</span>
-  //     <button
-  //       onClick={() => {
-  //         logoutSuccess()
-  //         AuthService.logout() // careful, this is a static method
-  //         history.push({ pathname: '/' })
-  //       }}
-  //     >
-  //       Logout
-  //     </button>
-  //   </div>
-  // )}
-  // { error &&
-  //   <p>{error}</p>
-  // }
 
 Header.propTypes = {
   authService: PropTypes.object.isRequired,
