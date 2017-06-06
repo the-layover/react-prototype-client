@@ -1,13 +1,15 @@
 import * as ActionTypes from '../actions/types'
 
 export default function navigatorReducer(state = {
+  bounds: null,
   center: null,
   content: null,
-  radius: 6000
+  radius: 6000,
+  markers: []
 }, action) {
   switch (action.type) {
   case ActionTypes.GEOLOCATION_REQUEST:
-    return {...state}
+    return {...state, center: action.center, bounds: action.bounds}
   case ActionTypes.GEOLOCATION_SUCCESS:
     return {...state, center: action.center, content: `Location found using HTML5.`}
   case ActionTypes.GEOLOCATION_ERROR:

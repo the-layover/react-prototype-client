@@ -3,10 +3,12 @@ import * as types from './types'
 // export const GEOLOCATION_SUCCESS = 'GEOLOCATION_SUCCESS'
 // export const GEOLOCATION_ERROR = 'GEOLOCATION_ERROR'
 
-export function geolocationRequest() {
+export function geolocationRequest(center, bounds) {
   console.log('moved');
   return {
-    type: types.GEOLOCATION_REQUEST
+    type: types.GEOLOCATION_REQUEST,
+    center,
+    bounds
   }
 }
 

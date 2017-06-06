@@ -29,8 +29,10 @@ const geolocation = (
 
 const GeolocationExampleGoogleMap = withGoogleMap(props => (
   <GoogleMap
+    ref={props.onMapMounted}
     defaultZoom={14}
     center={props.center}
+    onBoundsChanged={props.onBoundsChanged}
   >
     {props.center && (
       <InfoWindow position={props.center}>
@@ -68,6 +70,22 @@ class GeolocationExample extends Component {
     // };
 
     this.isUnmounted = false;
+  }
+
+  handleMapMounted(map) {
+  this._map = map;
+  }
+
+  handleBoundsChanged() {
+    let bounds = this._map.getBounds();
+    let center = this._map.getCenter();
+    console.log(`center: ${center}, bounds: ${bounds}`);
+    this.props.geolocationRequest(center, bounds);
+    //
+    // this.setState({
+    //   bounds: this._map.getBounds(),
+    //   center: this._map.getCenter(),
+    // });
   }
 
   componentDidMount() {
@@ -138,6 +156,10 @@ class GeolocationExample extends Component {
         center={this.props.center}
         content={this.props.content}
         radius={this.props.radius}
+        bounds={this.props.bounds}
+        onMapMounted={this.handleMapMounted.bind(this)}
+        onBoundsChanged={this.handleBoundsChanged.bind(this)}
+        onDragStart={this.props.geolocationRequest}
       />
     );
   }
@@ -152,9 +174,11 @@ const mapStateToProps = (state) => {
   //   error
   // }
   return {
+    bounds: state.nav.bounds,
     center: state.nav.center,
     content: state.nav.content,
     radius: state.nav.radius,
+    markers: state.nav.markers
   }
 }
 
