@@ -1,6 +1,10 @@
 import canUseDOM from 'can-use-dom';
 import raf from 'raf';
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../../actions';
+
 import {
   default as React,
   Component
@@ -54,19 +58,16 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
  *
  * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
  */
-export default class GeolocationExample extends Component {
-  constructor() {
-    super();
-    this.state = {
-      center: null,
-      content: null,
-      radius: 6000,
-    };
+class GeolocationExample extends Component {
+  constructor(props) {
+    super(props);
+    // this.state = {
+    //   center: null,
+    //   content: null,
+    //   radius: 6000,
+    // };
 
     this.isUnmounted = false;
-  }
-  mapMoved() {
-    console.log('moved');
   }
 
   componentDidMount() {
@@ -74,37 +75,50 @@ export default class GeolocationExample extends Component {
       if (this.isUnmounted) {
         return;
       }
-      this.setState({ radius: Math.max(this.state.radius - 20, 0) });
-
-      if (this.state.radius > 200) {
+      this.props.geolocationTick(Math.max(this.props.radius - 20, 0));
+      // this.setState({ radius: Math.max(this.state.radius - 20, 0) });
+      if (this.props.radius > 200) {
         raf(tick);
       }
+      // if (this.state.radius > 200) {
+      //   raf(tick);
+      // }
     };
 
     geolocation.getCurrentPosition((position) => {
       if (this.isUnmounted) {
         return;
       }
-      this.setState({
-        center: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        },
-        content: `Location found using HTML5.`,
-      });
+      let center = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }
+      this.props.geolocationSuccess(center);
+      // this.setState({
+      //   center: {
+      //     lat: position.coords.latitude,
+      //     lng: position.coords.longitude,
+      //   },
+      //   content: `Location found using HTML5.`,
+      // });
 
       raf(tick);
     }, (reason) => {
       if (this.isUnmounted) {
         return;
       }
-      this.setState({
-        center: {
-          lat: 60,
-          lng: 105,
-        },
-        content: `Error: The Geolocation service failed (${reason}).`,
-      });
+      let center = {
+        lat: 60,
+        lng: 105
+      }
+      this.props.geolocationError(center, `Error: The Geolocation service failed (${reason}).`);
+      // this.setState({
+      //   center: {
+      //     lat: 60,
+      //     lng: 105,
+      //   },
+      //   content: `Error: The Geolocation service failed (${reason}).`,
+      // });
     });
   }
 
@@ -121,11 +135,36 @@ export default class GeolocationExample extends Component {
         mapElement={
           <div style={{ height: `500px` }} />
         }
-        center={this.state.center}
-        content={this.state.content}
-        radius={this.state.radius}
-        onDragEnd={this.mapMoved.bind(this)}
+        center={this.props.center}
+        content={this.props.content}
+        radius={this.props.radius}
       />
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  // reducer functions
+  // const { isAuthenticated, profile, error } = state.auth
+  // return {
+  //   isAuthenticated,
+  //   profile,
+  //   error
+  // }
+  return {
+    center: state.nav.center,
+    content: state.nav.content,
+    radius: state.nav.radius,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+};
+
+const MapContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GeolocationExample);
+
+export default MapContainer;

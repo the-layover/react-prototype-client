@@ -4,21 +4,30 @@ import * as types from './types'
 // export const GEOLOCATION_ERROR = 'GEOLOCATION_ERROR'
 
 export function geolocationRequest() {
+  console.log('moved');
   return {
     type: types.GEOLOCATION_REQUEST
   }
 }
 
-export function geolocationSuccess(profile) {
+export function geolocationSuccess(center) {
   return {
     type: types.GEOLOCATION_SUCCESS,
-    profile
+    center
   }
 }
 
-export function geolocationError(error) {
+export function geolocationError(center, error) {
   return {
     type: types.GEOLOCATION_ERROR,
+    center,
     error
+  }
+}
+
+export function geolocationTick(radius) {
+  return {
+    type: types.GEOLOCATION_TICK,
+    radius
   }
 }

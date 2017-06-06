@@ -6,6 +6,21 @@ import { withRouter } from 'react-router-dom'
 
 import AppView from './AppView'
 
+// const mapStateToProps = (state) => {
+//   // reducer functions
+//   // const { isAuthenticated, profile, error } = state.auth
+//   // return {
+//   //   isAuthenticated,
+//   //   profile,
+//   //   error
+//   // }
+//   return {
+//     center: state.nav.center,
+//     content: state.nav.content,
+//     radius: state.nav.radius,
+//   }
+// }
+
 // const mapDispatchToProps = (dispatch) => {
 //   return {
 //     loginSuccess: (profile) => dispatch(loginSuccess(profile)),
@@ -19,6 +34,7 @@ function mapDispatchToProps(dispatch) {
 
 const AppContainer = withRouter(connect(
   null, // no mapStateToProps
+  // mapStateToProps,
   mapDispatchToProps
 )(AppView));
 
