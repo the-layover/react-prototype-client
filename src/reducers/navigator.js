@@ -9,7 +9,7 @@ export default function navigatorReducer(state = {
 }, action) {
   switch (action.type) {
   case ActionTypes.GEOLOCATION_REQUEST:
-    return {...state, center: action.center, bounds: action.bounds}
+    return {...state, center: action.center, bounds: action.bounds, content: action.content}
   case ActionTypes.GEOLOCATION_SUCCESS:
     return {...state, center: action.center, content: `Location found using HTML5.`}
   case ActionTypes.GEOLOCATION_ERROR:

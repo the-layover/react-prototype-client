@@ -11,7 +11,7 @@ import HomePage from '../../components/HomePage/HomePage'
 import AboutPage from '../../components/AboutPage/AboutPage'
 import MapPage from '../../components/MapPage/MapPage'
 import NotFoundPage from '../../components/NotFoundPage/NotFoundPage'
-
+import TestPage from '../../components/TestPage/TestPage'
 
 //services
 import AuthService from '../../utils/AuthService'
@@ -47,6 +47,7 @@ class App extends React.Component {
           <Route exact path="/" component={HomePage}/>
           <Route path="/about" component={AboutPage}/>
           <Route path="/map" component={MapPage}/>
+          <Route path="/test" component={TestPage}/>
           <Route component={NotFoundPage}/>
         </Switch>
         <FooterContainer />
