@@ -12,7 +12,9 @@ const Header = ({ authService, history, isAuthenticated, profile, error, loginRe
       <li><Link to='/'>The Layover</Link></li>
       <li><Link to='/about'>About</Link></li>
       <li><Link to='/map'>Map</Link></li>
-      <li><Link to='/test'>Test</Link></li>
+      {
+        AuthService.loggedIn() ? <li><Link to='/test'>Test</Link></li> : ''
+      }
     </ul>
     { !isAuthenticated ? (
       <RaisedButton label="Login" onClick={() => {

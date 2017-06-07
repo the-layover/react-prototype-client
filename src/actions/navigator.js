@@ -1,5 +1,6 @@
 import * as types from './types'
 import config from '../utils/config.js'
+import getToken from '../utils/AuthService';
 import axios from 'axios'
 // export const GEOLOCATION_REQUEST = 'GEOLOCATION_REQUEST'
 // export const GEOLOCATION_SUCCESS = 'GEOLOCATION_SUCCESS'
@@ -9,6 +10,7 @@ export function geolocationRequest(center, bounds) {
   return async dispatch => {
     try {
       const url = `${config.DEV_BASE_URL}/api/test/helloworld`;
+      // const headers = { headers: { Authorization: `Bearer ${getToken()}`}};
       const content = await axios.get(url).then((response) => {
         console.log('then axios ', response.data);
         return response.data;
