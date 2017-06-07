@@ -5,7 +5,8 @@ export default function navigatorReducer(state = {
   center: null,
   content: null,
   radius: 6000,
-  markers: []
+  markers: [],
+  query: ''
 }, action) {
   switch (action.type) {
   case ActionTypes.GEOLOCATION_REQUEST:

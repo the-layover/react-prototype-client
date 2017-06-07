@@ -6,15 +6,24 @@ import axios from 'axios'
 // export const GEOLOCATION_SUCCESS = 'GEOLOCATION_SUCCESS'
 // export const GEOLOCATION_ERROR = 'GEOLOCATION_ERROR'
 
-export function geolocationRequest(center, bounds) {
+export function geolocationRequest(center, bounds, lat, lng, keywords) {
   return async dispatch => {
     try {
+      const placesParams = [
+        `latitude/${encodeURIComponent(lat)}`,
+        `longitude/${encodeURIComponent(lng)}`
+      ];
       const url = `${config.DEV_BASE_URL}/api/test/helloworld`;
+      const placesUrl = `${config.DEV_BASE_URL}/api/places/search/${placesParams.join('/')}?keywords=${encodeURIComponent(keywords)}`
       // const headers = { headers: { Authorization: `Bearer ${getToken()}`}};
+      console.log(placesUrl);
       const content = await axios.get(url).then((response) => {
-        console.log('then axios ', response.data);
         return response.data;
       });
+      const markers = await axios.get(placesUrl).then((response) => {
+        return response.data;
+      });
+      console.log(markers);
       dispatch({
         type: types.GEOLOCATION_REQUEST,
         content: content,

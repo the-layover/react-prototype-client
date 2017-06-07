@@ -79,8 +79,11 @@ class GeolocationExample extends Component {
   handleBoundsChanged() {
     let bounds = this._map.getBounds();
     let center = this._map.getCenter();
+    let lat = this._map.getCenter().lat();
+    let lng = this._map.getCenter().lng();
+    let query = this.props.query;
     console.log(`center: ${center}, bounds: ${bounds}`);
-    this.props.geolocationRequest(center, bounds);
+    this.props.geolocationRequest(center, bounds, lat, lng, query);
     //
     // this.setState({
     //   bounds: this._map.getBounds(),
@@ -178,7 +181,8 @@ const mapStateToProps = (state) => {
     center: state.nav.center,
     content: state.nav.content,
     radius: state.nav.radius,
-    markers: state.nav.markers
+    markers: state.nav.markers,
+    query: state.nav.query
   }
 }
 
