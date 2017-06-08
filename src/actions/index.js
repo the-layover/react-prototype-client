@@ -1,5 +1,6 @@
 import * as AuthActions from './auth'
 import * as NavigatorActions from './navigator'
+import * as FlightActions from './flight'
 
 // export * from './auth'
 

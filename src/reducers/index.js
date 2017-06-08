@@ -3,10 +3,12 @@
 import { combineReducers } from 'redux'
 import auth from './auth'
 import nav from './navigator'
+import flight from './flight'
 
 const rootReducer = combineReducers({
   auth,
-  nav
+  nav,
+  flight
   // add your other reducers here
 })
 
