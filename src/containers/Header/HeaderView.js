@@ -1,12 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 
+
 import AuthService from '../../utils/AuthService'
 import './Header.css'
+
+injectTapEventPlugin();
 
 class Header extends React.Component {
   constructor(props) {
@@ -20,11 +25,15 @@ class Header extends React.Component {
   }
 
   handleFlightOrigin(value) {
-    this.setState({localFlightOrigin: value}, () => console.log(this.state.localFlightOrigin));
+    this.setState({localFlightOrigin: value}, () => console.log(`localFlightOrigin: ${this.state.localFlightOrigin}; localFlightDestination: ${this.state.localFlightDestination}; localFlightDate: ${this.state.localFlightDate}`));
   }
 
   handleFlightDestination(value) {
     this.setState({localFlightDestination: value});
+  }
+
+  handleDate(value){
+    this.setState({localFlightDate: value})
   }
 
   // handleFlightDate(value) {
@@ -32,7 +41,7 @@ class Header extends React.Component {
   // }
 
   handleSubmit(event) {
-    alert(this.state.localFlightOrigin);
+    alert(`localFlightOrigin: ${this.state.localFlightOrigin}; localFlightDestination: ${this.state.localFlightDestination}; localFlightDate: ${this.state.localFlightDate}`);
     event.preventDefault();
   }
   // <input type="text" value={this.props.flightOrigin} onBlur={this.handleFlightOrigin.bind(this)} />
@@ -43,17 +52,29 @@ class Header extends React.Component {
     return(
       <div>
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <AutoComplete
-            hintText="Origin"
-            dataSource={this.state.dataSource}
-            onUpdateInput={this.handleFlightOrigin.bind(this)}
-            />
-            <AutoComplete
-              hintText="Destination"
-              dataSource={this.state.dataSource}
-              onUpdateInput={this.handleFlightDestination.bind(this)}
+          <ul className="list-inline">
+            <li>
+              <AutoComplete
+                hintText="Origin"
+                dataSource={this.state.dataSource}
+                onUpdateInput={this.handleFlightOrigin.bind(this)}
               />
-          <input type="submit" value="Submit" />
+            </li>
+            <li>
+              <AutoComplete
+                hintText="Destination"
+                dataSource={this.state.dataSource}
+                onUpdateInput={this.handleFlightDestination.bind(this)}
+              />
+            </li>
+            <li>
+              <DatePicker onChange={this.handleDate.bind(this)} value={this.props.flightDate} hintText="Date to be completed by" container="inline" mode="landscape" />
+            </li>
+            <li>
+              <RaisedButton label="Login" onClick={this.handleSubmit.bind(this)}
+              />
+            </li>
+          </ul>
         </form>
         <ul className="list-inline">
           <li><Link to='/'>The Layover</Link></li>
