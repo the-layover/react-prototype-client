@@ -1,17 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import * as moment from 'moment'
 
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 import AuthService from '../../utils/AuthService'
 import './Header.css'
-
-injectTapEventPlugin();
 
 class Header extends React.Component {
   constructor(props) {
@@ -22,6 +20,7 @@ class Header extends React.Component {
       localFlightDate: '',
       dataSource: []
     }
+    this.handleDate = this.handleDate.bind(this);
   }
 
   handleFlightOrigin(value) {
@@ -32,8 +31,9 @@ class Header extends React.Component {
     this.setState({localFlightDestination: value});
   }
 
-  handleDate(value){
-    this.setState({localFlightDate: value})
+  handleDate(event, date){
+    let formatDate = moment(date).format('YYYY-MM-DD');
+    this.setState({localFlightDate: formatDate});
   }
 
   // handleFlightDate(value) {
@@ -41,6 +41,7 @@ class Header extends React.Component {
   // }
 
   handleSubmit(event) {
+    //TODO: create action to query flight info using this local state data
     alert(`localFlightOrigin: ${this.state.localFlightOrigin}; localFlightDestination: ${this.state.localFlightDestination}; localFlightDate: ${this.state.localFlightDate}`);
     event.preventDefault();
   }
@@ -68,7 +69,7 @@ class Header extends React.Component {
               />
             </li>
             <li>
-              <DatePicker onChange={this.handleDate.bind(this)} value={this.props.flightDate} hintText="Date to be completed by" container="inline" mode="landscape" />
+              <DatePicker onChange={(event, date) => this.handleDate(event, date)} value={this.props.flightDate} hintText="Date to be completed by" container="inline" />
             </li>
             <li>
               <RaisedButton label="Login" onClick={this.handleSubmit.bind(this)}

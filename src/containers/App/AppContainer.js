@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../../actions';
 // import { loginSuccess, loginError } from '../../actions'
 import { withRouter } from 'react-router-dom'
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import AppView from './AppView'
 
@@ -27,6 +28,8 @@ import AppView from './AppView'
 //     loginError: (error) => dispatch(loginError(error))
 //   }
 // }
+
+injectTapEventPlugin();
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
