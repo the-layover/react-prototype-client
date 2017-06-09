@@ -20,34 +20,32 @@ class Header extends React.Component {
       localFlightDate: '',
       dataSource: []
     }
-    this.handleDate = this.handleDate.bind(this);
+    this.handleFlightDate = this.handleFlightDate.bind(this);
   }
 
   handleFlightOrigin(value) {
+    //TODO: create autocomplete to insert airport suggestions
     this.setState({localFlightOrigin: value}, () => console.log(`localFlightOrigin: ${this.state.localFlightOrigin}; localFlightDestination: ${this.state.localFlightDestination}; localFlightDate: ${this.state.localFlightDate}`));
   }
 
   handleFlightDestination(value) {
+    //TODO: create autocomplete to insert airport suggestions
     this.setState({localFlightDestination: value});
   }
 
-  handleDate(event, date){
-    let formatDate = moment(date).format('YYYY-MM-DD');
-    this.setState({localFlightDate: formatDate});
+  handleFlightDate(event, date){
+    //TODO: date default to today
+    // let formatDate = moment(date).format('YYYY-MM-DD');
+    this.setState({localFlightDate: date});
   }
-
-  // handleFlightDate(value) {
-  //   this.setState({localFlightDate: value});
-  // }
 
   handleSubmit(event) {
     //TODO: create action to query flight info using this local state data
-    alert(`localFlightOrigin: ${this.state.localFlightOrigin}; localFlightDestination: ${this.state.localFlightDestination}; localFlightDate: ${this.state.localFlightDate}`);
+    //TODO: make sure the input being passed is the airport codes when autocomplete feature is complete
+    this.props.flightInfoRequest(this.state.localFlightOrigin, this.state.localFlightDestination, this.state.localFlightDate);
+    // alert(`localFlightOrigin: ${this.state.localFlightOrigin}; localFlightDestination: ${this.state.localFlightDestination}; localFlightDate: ${this.state.localFlightDate}`);
     event.preventDefault();
   }
-  // <input type="text" value={this.props.flightOrigin} onBlur={this.handleFlightOrigin.bind(this)} />
-  // <input type="text" value={this.props.flightDestination} onBlur={this.handleFlightDestination.bind(this)} />
-  // <input type="text" value={this.props.flightDate} onBlur={this.handleFlightDate.bind(this)} />
 
   render(){
     return(
@@ -69,7 +67,7 @@ class Header extends React.Component {
               />
             </li>
             <li>
-              <DatePicker onChange={(event, date) => this.handleDate(event, date)} value={this.props.flightDate} hintText="Date to be completed by" container="inline" />
+              <DatePicker onChange={(event, date) => this.handleFlightDate(event, date)} value={this.props.flightDate || this.state.localFlightDate} hintText="Date to be completed by" container="inline" />
             </li>
             <li>
               <RaisedButton label="Login" onClick={this.handleSubmit.bind(this)}

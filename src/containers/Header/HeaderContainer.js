@@ -18,10 +18,12 @@ const mapStateToProps = (state) => {
     isAuthenticated: state.auth.isAuthenticated,
     profile: state.auth.profile,
     error: state.auth.error,
+    content: state.flight.content,
     flightOrigin: state.flight.origin,
     flightDestination: state.flight.destination,
     flightDate: state.flight.date,
-    flightLayover: state.flight.layover,
+    flights: state.flight.flights,
+    flightLayovers: state.flight.layovers,
   }
 }
 

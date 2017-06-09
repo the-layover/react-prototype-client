@@ -2,22 +2,31 @@ import * as types from './types'
 import config from '../utils/config.js'
 import axios from 'axios'
 
-export function flightInfoRequest(origin, destination) {
+export function flightInfoRequest(origin, destination, date) {
   return async dispatch => {
     try {
-      const url = `${config.DEV_BASE_URL}/api/test/helloworld`;
-      const content = await axios.get(url).then((response) => {
+      const flightSearchParams = [
+        `origin/${encodeURIComponent(origin)}`,
+        `destination/${encodeURIComponent(destination)}`,
+        `date/${encodeURIComponent(date)}`,
+      ]
+      const flightSearchUrl = `${config.DEV_BASE_URL}/api/flight/search/${flightSearchParams.join('/')}`
+      // const flights = await axios.get(flightSearchUrl).then((response) => {
+      //   return response.data;
+      // });
+      const content = await axios.get(flightSearchUrl).then((response) => {
         return response.data;
       });
-      const date = Date.now();
-      const flightInfo = {};
+      const flights = [];
+      const layovers = [];
       dispatch({
         type: types.FLIGHT_INFO_SUCCESS,
-        content: content,
-        date: date,
-        flightInfo: flightInfo,
-        origin,
-        destination
+        flights: flights, //should be array
+        layovers: layovers, //should be array
+        date: date, //datetime object?
+        origin, //string
+        destination, //string
+        content: content
       });
     } catch (error) {
       dispatch({
