@@ -21,6 +21,10 @@
     -->
     <title>The Layover</title>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTBRCGgZN46IrgtVULrD-XjxHIOh8Zekw"></script>
+    <!-- <script type="text/javascript" src="//pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+    <link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/1.0.0/eon.css"/> -->
+    <script type="text/javascript" src="http://pubnub.github.io/eon/lib/eon.js"></script>
+    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/lib/eon.css" />
   </head>
   <body>
     <noscript>
@@ -37,5 +41,38 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <!-- <script>
+        var pubnub = PUBNUB.init({
+            publish_key: 'pub-c-be6f6fd9-ebd3-496b-9490-50e82e5a2f01',
+            subscribe_key: 'sub-c-08b50a70-3c9e-11e6-9baf-0619f8945a4f'
+        });
+
+        eon.chart({
+          pubnub: pubnub,
+          channel: 'eon-bar-chart',
+          generate: {
+            bindto: '#chart',
+            data: {
+              type: 'bar'
+            }
+          }
+        });
+
+        setInterval(function() {
+          pubnub.publish({
+            channel: 'eon-bar-chart',
+            message: {
+              columns: [
+                  ['Austin', Math.floor(Math.random() * 99)],
+                  ['New York', Math.floor(Math.random() * 99)],
+                  ['San Francisco', Math.floor(Math.random() * 99)],
+                  ['Portland', Math.floor(Math.random() * 99)]
+              ]
+            }
+          });
+        }, 1000);
+    </script> -->
+
   </body>
 </html>

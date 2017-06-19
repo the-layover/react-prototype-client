@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../../actions';
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 import {
   default as React,
   Component
@@ -14,7 +16,8 @@ import {
   withGoogleMap,
   GoogleMap,
   Circle,
-  InfoWindow
+  InfoWindow,
+  Marker
 } from 'react-google-maps';
 
 const geolocation = (
@@ -30,9 +33,10 @@ const geolocation = (
 const GeolocationExampleGoogleMap = withGoogleMap(props => (
   <GoogleMap
     ref={props.onMapMounted}
-    defaultZoom={14}
+    defaultZoom={15}
     center={props.center}
     onBoundsChanged={props.onBoundsChanged}
+    onDragEnd={props.onDragEnd}
   >
     {props.center && (
       <InfoWindow position={props.center}>
@@ -52,6 +56,11 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
         }}
       />
     )}
+    {props.markers.map(marker => (
+          <Marker
+            {...marker}
+          />
+        ))}
   </GoogleMap>
 ));
 
@@ -63,11 +72,14 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
 class GeolocationExample extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   center: null,
-    //   content: null,
-    //   radius: 6000,
-    // };
+    this.state = {
+      bounds: null,
+      center: null,
+      lat: null,
+      lng: null,
+      query: [],
+      markers: []
+    };
 
     this.isUnmounted = false;
   }
@@ -82,13 +94,34 @@ class GeolocationExample extends Component {
     let lat = this._map.getCenter().lat();
     let lng = this._map.getCenter().lng();
     let query = this.props.query;
-    console.log(`center: ${center}, bounds: ${bounds}`);
-    this.props.geolocationRequest(center, bounds, lat, lng, query);
-    //
-    // this.setState({
-    //   bounds: this._map.getBounds(),
-    //   center: this._map.getCenter(),
-    // });
+    this.setState({
+      bounds: bounds,
+      center: center,
+      lat: lat,
+      lng: lng,
+      query: query
+    });
+  }
+
+  geolocationRequest() {
+    console.log('calling geolocationRequest: ', this.props.geolocationRequest);
+    this.props.geolocationRequest(this.state.center, this.state.bounds, this.state.lat, this.state.lng, this.state.query);
+  }
+
+  handleSearch() {
+    this.props.searchPlacesRequest(this.state.lat, this.state.lng, this.state.query);
+    let localMarkers = (this.props.markers).map((option) => {
+      return {
+        position: {
+          lat: option.location.lat,
+          lng: option.location.lng
+        },
+        key: `${option.id}`,
+        defaultAnimation: 2,
+      }
+    });
+    console.log(localMarkers);
+    this.setState({markers: localMarkers});
   }
 
   componentDidMount() {
@@ -97,13 +130,9 @@ class GeolocationExample extends Component {
         return;
       }
       this.props.geolocationTick(Math.max(this.props.radius - 20, 0));
-      // this.setState({ radius: Math.max(this.state.radius - 20, 0) });
       if (this.props.radius > 200) {
         raf(tick);
       }
-      // if (this.state.radius > 200) {
-      //   raf(tick);
-      // }
     };
 
     geolocation.getCurrentPosition((position) => {
@@ -115,13 +144,6 @@ class GeolocationExample extends Component {
         lng: position.coords.longitude,
       }
       this.props.geolocationSuccess(center);
-      // this.setState({
-      //   center: {
-      //     lat: position.coords.latitude,
-      //     lng: position.coords.longitude,
-      //   },
-      //   content: `Location found using HTML5.`,
-      // });
 
       raf(tick);
     }, (reason) => {
@@ -133,13 +155,6 @@ class GeolocationExample extends Component {
         lng: 105
       }
       this.props.geolocationError(center, `Error: The Geolocation service failed (${reason}).`);
-      // this.setState({
-      //   center: {
-      //     lat: 60,
-      //     lng: 105,
-      //   },
-      //   content: `Error: The Geolocation service failed (${reason}).`,
-      // });
     });
   }
 
@@ -149,21 +164,28 @@ class GeolocationExample extends Component {
 
   render() {
     return (
-      <GeolocationExampleGoogleMap
-        containerElement={
-          <div style={{ height: `500px` }} />
-        }
-        mapElement={
-          <div style={{ height: `500px` }} />
-        }
-        center={this.props.center}
-        content={this.props.content}
-        radius={this.props.radius}
-        bounds={this.props.bounds}
-        onMapMounted={this.handleMapMounted.bind(this)}
-        onBoundsChanged={this.handleBoundsChanged.bind(this)}
-        onDragStart={this.props.geolocationRequest}
-      />
+      <div>
+        <RaisedButton
+            label="Search for Markers"
+          onClick={this.handleSearch.bind(this)}
+        />
+        <GeolocationExampleGoogleMap
+          containerElement={
+            <div style={{ height: `500px` }} />
+          }
+          mapElement={
+            <div style={{ height: `500px` }} />
+          }
+          center={this.props.center}
+          content={this.props.content}
+          radius={this.props.radius}
+          bounds={this.props.bounds}
+          markers={this.state.markers}
+          onMapMounted={this.handleMapMounted.bind(this)}
+          onBoundsChanged={this.handleBoundsChanged.bind(this)}
+          onDragEnd={this.geolocationRequest.bind(this)}
+          />
+      </div>
     );
   }
 }

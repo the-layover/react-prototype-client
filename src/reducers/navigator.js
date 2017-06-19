@@ -17,7 +17,11 @@ export default function navigatorReducer(state = {
     return {...state, center: action.center, content: action.error}
   case ActionTypes.GEOLOCATION_TICK:
     return {...state, radius: action.radius}
-    default:
+  case ActionTypes.GEOLOCATION_MARKER_SUCCESS:
+    return {...state, markers: action.markers}
+  case ActionTypes.GEOLOCATION_MARKER_ERROR:
+    return {...state}
+  default:
     return state
   }
 }

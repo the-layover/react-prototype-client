@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import configureStore from './store/configureStore'
 import AppContainer from './containers/App/AppContainer'
+import './styles/index.css'
 
 const store = configureStore()
 

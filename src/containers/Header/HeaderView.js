@@ -21,6 +21,9 @@ class Header extends React.Component {
       dataSource: []
     }
     this.handleFlightDate = this.handleFlightDate.bind(this);
+    this.handleFlightOrigin = this.handleFlightOrigin.bind(this);
+    this.handleFlightDestination = this.handleFlightDestination.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleFlightOrigin(value) {
@@ -37,6 +40,7 @@ class Header extends React.Component {
     //TODO: date default to today
     // let formatDate = moment(date).format('YYYY-MM-DD');
     this.setState({localFlightDate: date});
+    console.log('updated');
   }
 
   handleSubmit(event) {
@@ -47,6 +51,7 @@ class Header extends React.Component {
     event.preventDefault();
   }
 
+
   render(){
     return(
       <div>
@@ -56,21 +61,26 @@ class Header extends React.Component {
               <AutoComplete
                 hintText="Origin"
                 dataSource={this.state.dataSource}
-                onUpdateInput={this.handleFlightOrigin.bind(this)}
+                onUpdateInput={this.handleFlightOrigin}
               />
             </li>
             <li>
               <AutoComplete
                 hintText="Destination"
                 dataSource={this.state.dataSource}
-                onUpdateInput={this.handleFlightDestination.bind(this)}
+                onUpdateInput={this.handleFlightDestination}
               />
             </li>
             <li>
-              <DatePicker onChange={(event, date) => this.handleFlightDate(event, date)} value={this.props.flightDate || this.state.localFlightDate} hintText="Date to be completed by" container="inline" />
+              <DatePicker
+                onChange={(event, date) => this.handleFlightDate(event, date)}
+                hintText="Date to be completed by"
+                container="inline" />
             </li>
             <li>
-              <RaisedButton label="Login" onClick={this.handleSubmit.bind(this)}
+              <RaisedButton
+                  label="Submit"
+                onClick={this.handleSubmit}
               />
             </li>
           </ul>
@@ -111,43 +121,6 @@ class Header extends React.Component {
     )
   }
 }
-
-// const Header = ({ authService, history, isAuthenticated, profile, error, loginRequest, logoutSuccess }) =>
-//   <div>
-//     <ul className="list-inline">
-//       <li><Link to='/'>The Layover</Link></li>
-//       <li><Link to='/about'>About</Link></li>
-//       <li><Link to='/map'>Map</Link></li>
-//       {
-//         AuthService.loggedIn() ? <li><Link to='/test'>Test</Link></li> : ''
-//       }
-//     </ul>
-//     { !isAuthenticated ? (
-//       <RaisedButton label="Login" onClick={() => {
-//           authService.login()
-//           loginRequest()
-//         }}
-//         />
-//     ) : (
-//       <div>
-//         <img src={profile.picture} height="40px" alt="profile" />
-//         <span>Welcome, {profile.nickname}</span>
-//         <button
-//           onClick={() => {
-//             logoutSuccess()
-//             AuthService.logout() // careful, this is a static method
-//             history.push({ pathname: '/' })
-//           }}
-//           >
-//           Logout
-//         </button>
-//       </div>
-//     )}
-//     { error &&
-//       <p>{error}</p>
-//     }
-//
-//   </div>
 
 Header.propTypes = {
   authService: PropTypes.object.isRequired,

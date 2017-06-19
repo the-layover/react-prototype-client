@@ -5,12 +5,14 @@ import axios from 'axios'
 export function flightInfoRequest(origin, destination, date) {
   return async dispatch => {
     try {
+      console.log('flightInfoRequest args: ', arguments);
       const flightSearchParams = [
         `origin/${encodeURIComponent(origin)}`,
         `destination/${encodeURIComponent(destination)}`,
         `date/${encodeURIComponent(date)}`,
       ]
       const flightSearchUrl = `${config.DEV_BASE_URL}/api/flight/search/${flightSearchParams.join('/')}`
+      console.log(flightSearchUrl);
       // const flights = await axios.get(flightSearchUrl).then((response) => {
       //   return response.data;
       // });
